@@ -24,29 +24,61 @@ sales_data = [
 
 def total_sales_by_product(data, product_key):
     """Calculates the total sales of a specific product in 30 days."""
-    pass
+    total = 0
+    for day_data in data:
+        total += day_data.get(product_key, 0)
+    return total
 
 
 def average_daily_sales(data, product_key):
     """Calculates the average daily sales of a specific product."""
-    pass
+    total = total_sales_by_product(data, product_key)
+    if len(data) == 0:
+        return 0
+    return total / len(data)
 
 
 def best_selling_day(data):
     """Finds the day with the highest total sales."""
-    pass
+    max_sales = -1
+    best_day = None
+    for day_data in data:
+        daily_total = day_data.get("product_a", 0) + day_data.get("product_b", 0) + day_data.get("product_c", 0)
+        if daily_total > max_sales:
+            max_sales = daily_total
+            best_day = day_data.get("day")
+    return best_day
 
 
 def days_above_threshold(data, product_key, threshold):
     """Counts how many days the sales of a product exceeded a given threshold."""
-    pass
+    count = 0
+    for day_data in data:
+        if day_data.get(product_key, 0) > threshold:
+            count += 1
+    return count
 
 
 def top_product(data):
     """Determines which product had the highest total sales in 30 days."""
-    pass
+    products = ["product_a", "product_b", "product_c"]
+    product_totals = {p: total_sales_by_product(data, p) for p in products}
+    
+    best_product = None
+    max_total = -1
+    
+    for product, total in product_totals.items():
+        if total > max_total:
+            max_total = total
+            best_product = product
+            
+    return best_product
 
+"""Agrega una función para encontrar el día con las peores ventas."""
 
+"""Ordena los días por ventas totales y muestra los 3 mejores."""
+
+"""Calcula el rango (máximo - mínimo) de las ventas de un producto."""
 
 # Function tests
 print("Total sales of product_a:", total_sales_by_product(sales_data, "product_a"))
