@@ -74,11 +74,41 @@ def top_product(data):
             
     return best_product
 
-"""Agrega una función para encontrar el día con las peores ventas."""
+def worst_selling_day(data):
+    """Encuentra el día con las peores ventas totales."""
 
-"""Ordena los días por ventas totales y muestra los 3 mejores."""
+    min_sales = float('inf')
+    worst_day = None
 
-"""Calcula el rango (máximo - mínimo) de las ventas de un producto."""
+    for day_data in data:
+        daily_total = day_data.get("product_a", 0) + day_data.get("product_b", 0) + day_data.get("product_c", 0)
+        if daily_total < min_sales:
+            min_sales = daily_total
+            worst_day = day_data.get("day")
+    return worst_day
+
+
+def top_three_days(data):
+    """Ordena los días por ventas totales y muestra los 3 mejores."""
+
+    days_with_totals = []
+
+    for day_data in data:
+        daily_total = day_data.get("product_a", 0) + day_data.get("product_b", 0) + day_data.get("product_c", 0)
+        days_with_totals.append({"day": day_data.get("day"), "total_sales": daily_total})
+    
+    sorted_days = sorted(days_with_totals, key=lambda x: x["total_sales"], reverse=True)
+    
+    return sorted_days[:3]
+
+def product_sales_range(data, product_key):
+    """Calcula el rango (máximo - mínimo) de las ventas de un producto."""
+
+    sales = [day_data.get(product_key, 0) for day_data in data]
+
+    if not sales:
+        return 0
+    return max(sales) - min(sales)
 
 # Function tests
 print("Total sales of product_a:", total_sales_by_product(sales_data, "product_a"))
@@ -86,3 +116,7 @@ print("Average daily sales of product_b:", average_daily_sales(sales_data, "prod
 print("Day with highest total sales:", best_selling_day(sales_data))
 print("Days when product_c exceeded 300 sales:", days_above_threshold(sales_data, "product_c", 300))
 print("Product with highest total sales:", top_product(sales_data))
+
+print("Day with the worst sales:", worst_selling_day(sales_data))
+print("Top 3 days by total sales:", top_three_days(sales_data))
+print("Sales range for product_c:", product_sales_range(sales_data, "product_c"))
