@@ -77,7 +77,7 @@ def top_product(data):
 def worst_selling_day(data):
     """Encuentra el día con las peores ventas totales."""
 
-    min_sales = float('inf')
+    min_sales = float("inf")
     worst_day = None
 
     for day_data in data:
